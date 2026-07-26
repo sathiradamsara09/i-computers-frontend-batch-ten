@@ -1,4 +1,6 @@
 import './App.css'
+import TrendingProducts from './components/trendingProducts'
+
 
 function App() {
   
@@ -7,7 +9,7 @@ function App() {
     <>
       
       <div>
-        Sathira Damsara
+        <TrendingProducts/>        
       </div>
       
     </>
