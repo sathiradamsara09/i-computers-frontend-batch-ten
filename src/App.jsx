@@ -3,6 +3,7 @@ import './App.css'
 import AdminPage from './pages/adminPage'
 import HomePage from './pages/homePage'
 import TestPage from './pages/test'
+import LoginPage from './pages/loginPage'
 
 
 
@@ -20,6 +21,8 @@ function App() {
       <Route path='/admin/*' element={<AdminPage />}  />
 
       <Route path='/test' element={<TestPage />} />
+
+      <Route path='/login' element={<LoginPage />} />
 
      </Routes>
     
