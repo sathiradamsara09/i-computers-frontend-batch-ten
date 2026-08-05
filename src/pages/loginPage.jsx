@@ -1,11 +1,13 @@
 import axios from "axios";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";    
 
 export default function LoginPage() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     function handleLogin(){
         console.log("Email:", email);
@@ -17,10 +19,28 @@ export default function LoginPage() {
             password: password
         }).then((response)=>{
             console.log("Login successful: ", response.data);
+            localStorage.setItem("token", response.data.token);
+            //alert("Login successful!");
+            toast.success("Login successful!");
+
+            if(response.data.isAdmin){
+                // redirect to admin dashboard
+                //window.location.href = "/admin"
+                navigate("/admin");
+            }else{
+                // redirect to homepage
+                //window.location.href = "/"
+                navigate("/");
+            }
+
+
+
             // You can redirect the user to another page or store the token in localStorage here
         }).catch((error)=>{
-            console.error("Login failed: ", error);
-            // Handle login failure (e.g., show an error message to the user)
+            
+            //alert(error.response.data.message);
+            toast.error(error.response.data.message);
+            
         });
     }
 

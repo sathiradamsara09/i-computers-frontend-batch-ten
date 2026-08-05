@@ -4,7 +4,7 @@ import AdminPage from './pages/adminPage'
 import HomePage from './pages/homePage'
 import TestPage from './pages/test'
 import LoginPage from './pages/loginPage'
-
+import { Toaster } from 'react-hot-toast'
 
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
   return (
     
     <div className='w-full h-screen flex justify-center items-center bg-primary text-secondary'>
-
+      <Toaster position='top-right' />
      <Routes>
 
       <Route path='/' element={<HomePage />} />

@@ -1,13 +1,51 @@
-import { FaRegUserCircle, FaUserFriends } from "react-icons/fa";
+
+import { useState } from "react";
+import uploadMedia from "../utils/mediaUpload";
+
+
 
 export default function TestPage(){
 
-     
-  
-    return(
-        <div className="w-full text-7xl h-screen flex flex-col justify-center items-center bg-primary text-blue-600">
+     const [file , setFile] = useState(null);
 
-            
+     async function handleUpload(){
+
+        try{
+            const url = await uploadMedia(file);
+            console.log("Public URL: ", url);
+        } catch (error) {
+            console.log(error);
+        }
+        
+
+     }
+    
+     function handleUploadOld(){
+        
+        uploadMedia(file)
+        .then((url)=>{
+            console.log("Public URL: ", url);
+        })
+        .catch((error)=>{
+            console.log(error);
+        });
+     }
+
+
+    return(
+        <div className="w-full h-screen flex  flex-col justify-center items-center bg-primary text-secondary">
+
+            <input onChange={
+                (e)=>{
+                
+                    setFile(e.target.files[0]);
+                } 
+            }  type="file"/>
+
+            <button onClick={handleUpload} className="bg-secondary text-primary px-4 py-2 rounded-lg mt-4 hover:bg-secondary/80 transition-all duration-300">
+                Upload
+            </button>
+
         </div>
     )
 
