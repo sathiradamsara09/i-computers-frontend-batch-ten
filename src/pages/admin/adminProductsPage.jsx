@@ -2,27 +2,50 @@ import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa6";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { BiEdit } from "react-icons/bi";
+import { TbTrash } from "react-icons/tb";
+import toast from "react-hot-toast";
+import LoadingAnimation from "../../components/loadingAnimation";
+import ProductDeleteModal from "../../components/productDeleteModal";
 export default function AdminProductsPage(){
 
-    const [products , setProducts] = useState([]);
+    const [products , setProducts] = useState([])
+
+    const [isProductsAreLoaded , setIsProductsAreLoaded] = useState(false)
 
        useEffect(() => {
+          
 
+            if( ! isProductsAreLoaded){
         const token = localStorage.getItem("token");
+
     axios.get(import.meta.env.VITE_API_URL+"/products",{
       headers:{
         "Authorization": "Bearer " + token
       }
-    }).then(
+    }
+  )
+  .then(
       (response)=>{
        console.log("Products:", response.data);
         setProducts(response.data)
+        setIsProductsAreLoaded(true)
       }
-    ).catch(
+    )
+    .catch(
       (error)=>{
-        console.log("ERROR:", error.response?.data);
-      })
-        }, []);
+        console.log(error);
+      }
+    )
+      
+    }
+      
+  },
+    [isProductsAreLoaded]
+  )
+
+
+
 
        
     //backend api
@@ -49,8 +72,10 @@ export default function AdminProductsPage(){
                 
             
             </div>
-        
-        <table className="mt-5 w-full text-secondary">
+      
+        { 
+            isProductsAreLoaded ?         
+            <table className="mt-5 w-full text-secondary">
           <thead className="bg-accent/45 text-white">
             <tr>
               <th className="text-center border border-primary p-4">Image</th>
@@ -63,6 +88,7 @@ export default function AdminProductsPage(){
               <th className="text-center border border-primary p-4">Category</th>
               <th className="text-center border border-primary p-4">Availability</th>
               <th className="text-center border border-primary p-4">Stock</th>
+              
             </tr>
           </thead>
 
@@ -72,7 +98,7 @@ export default function AdminProductsPage(){
                     (item)=>{
                       return(
                         <tr className="odd:bg-gray-600 even:bg-primary odd:text-white border-t-4 border-primary hover:bg-accent/45" key={item.productId}>
-                          <td className>
+                          <td className="text-center p-2">
                             <img src={item.images[0]} alt={item.name} className="w-16 h-16 object-cover rounded-full" />
                           </td>
                           <td className="text-center text-wrap p-2">{item.productId}</td>
@@ -84,19 +110,58 @@ export default function AdminProductsPage(){
                           <td className="text-center text-wrap p-2">{item.category}</td>
                           <td className="text-center text-wrap p-2"></td>
                           <td className="text-center text-wrap p-2">{item.stock}</td>
-
+                          <td className="text-center text-wrap p-2">
+                            <ProductDeleteModal 
+                            product={item} 
+                            refresh={
+                              ()=>{
+                                setIsProductsAreLoaded(false)
+                              }
+                              
+                            }/>
+                           {/* <TbTrash className="text-2xl text-red-500 cursor-pointer hover:text-red-700" 
+                              onClick={
+                                ()=>{
+                                const token = localStorage.getItem("token"); 
+                                axios.delete(import.meta.VITE_API_URL + "/products/"+item.productId,{
+                                  headers: {
+                                    'Authorization': "Bearer "+ token
+                                  }
+                                }
+                              ).then(
+                                    () => {
+                                      toast.success("Product deleted successfully");
+                                      setIsProductsAreLoaded(false)
+                                    }
+                                  ).catch(
+                                    (error)=>{
+                                      toast.error("Failed to delete product")
+                                      console.log(error)
+                                    }
+                                  )
+                                }
+                              }
+                                                
+                            /> */}
+                            <Link to="/admin/edit-product" state={item}>
+                            <BiEdit className="text-2xl text-blue-500 cursor-pointer hover:text-blue-700" />
+                            </Link>
+                         </td>
                          </tr> 
                       )
                     }
                   )
-              }
+                }
               
 
               
                     
                     
           </tbody>
-        </table>
+            </table>
+            :
+            <LoadingAnimation/>
+        }
 
 
         <Link to="/admin/add-product" className="fixed bottom-8 right-8 w-[60px] h-[60px] bg-accent flex justify-center items-center rounded-full text-white text-3xl shadow-2xl hover:bg-black hover:text-accent">

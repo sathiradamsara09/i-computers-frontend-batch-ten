@@ -1,100 +1,115 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
-import axios from "axios";
 import uploadMedia from "../../utils/mediaUpload";
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useLocation, useNavigate } from "react-router-dom";
 
-
-export default function AdminAddProductPage(){
-    const [productID, setProductID] = useState("");
-    const [name, setName] = useState("");
-    const [altNames, setAltNames] = useState("");
-    const [price, setPrice] = useState("");
-    const [labelledPrice, setLabelledPrice] = useState("");
-    const [description, setDescription] = useState("");
-    const [images, setImages] = useState([]);
-    const [brand, setBrand] = useState("");
-    const [model, setModel] = useState("");
-    const [category, setCategory] = useState("");
-    const [isAvailable, setIsAvailable] = useState(true);
-    const [stock, setStock] = useState(0);
-    const navigate = useNavigate();
+export default function AdminEditProductPage(){
     
-    async function handleSave(){
+    const location = useLocation();
+    const [productID, setProductID] = useState(location.state?.productId || "");
+    const [name, setName] = useState(location.state?.name || "");
+    const [altNames, setAltNames] = useState(location.state?.altNames ? location.state.altNames.join(",") : "");
+    const [price, setPrice] = useState(location.state?.price || "");
+    const [labelledPrice, setLabelledPrice] = useState(location.state?.labelledPrice || "");
+    const [description, setDescription] = useState(location.state?.description || "");
+    const [images, setImages] = useState([]);
+    const [brand, setBrand] = useState(location.state?.brand || "");
+    const [model, setModel] = useState(location.state?.model || "");
+    const [category, setCategory] = useState(location.state?.category || "");
+    const [isAvailable, setIsAvailable] = useState(location.state?.isAvailable || false);
+    const [stock, setStock] = useState(location.state?.stock || 0);
+    const navigate = useNavigate();
 
-        try{
-            const token = localStorage.getItem("token");
-            console.log("TOKEN EXISTS:", token != null);
-            if(token == null){
-                toast.error("You must be logged in to perform this action.");
-                window.location.href = "/login";
-                return;
+    console.log("Location state: ", location.state);
+
+    useEffect(
+        ()=>{
+            if(location.state == null){
+                toast.error("No product data found. Please select a product to edit.");
+                navigate("/admin/products");
             }
-
-            const mediaUploadPromises = []
-
-            for(let i=0; i<images.length; i++){
-
-                mediaUploadPromises.push(uploadMedia(images[i]));
-            }
-
-            const urls = await Promise.all(mediaUploadPromises);
-            const altNamesArray = altNames.split(",")
+        },[]
+    );
 
 
+    
+    
+    async function handleSave(){ 
+        //try{
+        //    const token = localStorage.getItem("token");
+        //    console.log("TOKEN EXISTS:", token != null);
+        //    if(token == null){
+        //        toast.error("You must be logged in to perform this action.");
+        //        window.location.href = "/login";
+        //        return;
+        //    }
 
-            const productData = {
-                productId : productID,
-                name : name,
-                altNames : altNamesArray,
-                price : price,
-                labelledPrice : labelledPrice,
-                description : description,
-                images : urls,
-                brand : brand,
-                model : model,
-                category : category,
-                isAvailable : isAvailable,
-                stock : stock
-            }
+        //    const mediaUploadPromises = []
+
+        //    for(let i=0; i<images.length; i++){
+
+        //        mediaUploadPromises.push(uploadMedia(images[i]));
+        //    }
+
+        //    const urls = await Promise.all(mediaUploadPromises);
+        //    const altNamesArray = altNames.split(",")
+
+
+
+    //        const productData = {
+    //            productId : productID,
+    //            name : name,
+    //            altNames : altNamesArray,
+    //            price : price,
+    //            labelledPrice : labelledPrice,
+    //            description : description,
+    //            images : urls,
+    //           brand : brand,
+    //            model : model,
+    //            category : category,
+    //            isAvailable : isAvailable,
+    //            stock : stock
+    //        }
                 
-            const response = await axios.post(import.meta.env.VITE_API_URL+"/products", productData,
-                {
-                    headers : {
-                        "Authorization" : "Bearer "+token,
-                        "Content-Type" : "application/json"
-                    }
-                }
-            )
+    //        const response = await axios.post(import.meta.env.VITE_API_URL+"/products", productData,
+    //            {
+    //                headers : {
+    //                    "Authorization" : "Bearer "+token,
+    //                    "Content-Type" : "application/json"
+    //                }
+    //            }
+    //        )
 
-            toast.success("Product added successfully!");
+    //        toast.success("Product added successfully!");
         
-            navigate("/admin/products");
+    //        navigate("/admin/products");
             
             //upload images
 
     
 
-    }catch(error){
-        toast.error(error?.response.data.message || "Failed to add product. Please try again.")
-    }
-
+    //   }catch(error){
+    //   console.error("Error adding product:", error);
+    //   console.log("Error response data:", error?.response);
+    //   toast.error(error?.response.data.message || "Failed to add product. Please try again.")
+    // }
     }
 
 
     return(
         <div className="w-full h-full flex flex-col items-center p-4 overflow-y-scroll">
             <div className="sticky top-0 w-full h-[100px] rounded-lg bg-accent text-white flex items-center p-5 justify-between shadow-2xl">
-                <h1 className="text-2xl font-semibold">Add New Product</h1>
+                <h1 className="text-2xl font-semibold">Edit Product</h1>
                 <div className="h-full flex justify-center items-center">
-                    <button onClick={handleSave} className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">Save</button>
+                    <button onClick={handleSave} className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">Update</button>
                     <button className=" ml-4 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">Cancel</button>
                 
                 
                 </div>
             
             </div>
-            
+             
                 <div className="w-full flex flex-wrap bg-white shadow-2xl p-5 mt-8 rounded-lg">
 
                 <div className="w-1/4 p-2">
