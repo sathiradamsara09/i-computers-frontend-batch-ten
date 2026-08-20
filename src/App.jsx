@@ -7,16 +7,20 @@ import LoginPage from './pages/loginPage'
 import { Toaster } from 'react-hot-toast'
 
 
+
 function App() {
   
 
   return (
     
-    <div className='w-full h-screen flex justify-center items-center bg-primary text-secondary'>
+    <div className='w-full h-screen bg-primary text-secondary'>
       <Toaster position='top-right' />
+
+    
+
      <Routes>
 
-      <Route path='/' element={<HomePage />} />
+      <Route path='/*' element={<HomePage />} />
 
       <Route path='/admin/*' element={<AdminPage />}  />
 

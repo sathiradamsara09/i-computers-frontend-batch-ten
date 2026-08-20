@@ -18,11 +18,13 @@ export default function AdminAddProductPage(){
     const [category, setCategory] = useState("");
     const [isAvailable, setIsAvailable] = useState(true);
     const [stock, setStock] = useState(0);
+    const [isSaving, setIsSaving] = useState(false);
     const navigate = useNavigate();
     
     async function handleSave(){
 
         try{
+            setIsSaving(true);
             const token = localStorage.getItem("token");
             console.log("TOKEN EXISTS:", token != null);
             if(token == null){
@@ -76,6 +78,9 @@ export default function AdminAddProductPage(){
     
 
     }catch(error){
+        setIsSaving(false);
+        console.error("Error adding product:", error);
+        console.log("Error response data:", error?.response);
         toast.error(error?.response.data.message || "Failed to add product. Please try again.")
     }
 
@@ -87,7 +92,9 @@ export default function AdminAddProductPage(){
             <div className="sticky top-0 w-full h-[100px] rounded-lg bg-accent text-white flex items-center p-5 justify-between shadow-2xl">
                 <h1 className="text-2xl font-semibold">Add New Product</h1>
                 <div className="h-full flex justify-center items-center">
-                    <button onClick={handleSave} className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">Save</button>
+                    <button onClick={handleSave} className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600" disabled={isSaving}>
+                        {isSaving ? "Saving...": "Save"}
+                        </button>
                     <button className=" ml-4 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">Cancel</button>
                 
                 
