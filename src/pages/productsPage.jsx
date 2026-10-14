@@ -22,7 +22,7 @@ export default function ProductsPage(){
     }, [isProductsAreLoaded]);
 
     return(
-        <div className="w-full min-h-full flex justify-center flex-wrap gap-6 p-6">
+        <div className="w-full min-h-full flex justify-center flex-wrap gap-6 p-6 lg:pb-0">
             {
                 products.map((item) => {
                     return(
@@ -33,6 +33,7 @@ export default function ProductsPage(){
                     )
                 })
             }
+            <div className="w-full h-[150px]"></div>
         </div>
     )
 }

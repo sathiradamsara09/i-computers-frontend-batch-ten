@@ -95,7 +95,7 @@ export default function OrderDetailsModal(props){
                 >
 
                     <div
-                        className="w-[560px] max-w-full max-h-[90vh] bg-white rounded-2xl shadow-2xl relative overflow-hidden border border-gray-100"
+                        className="w-[560px] max-w-full h-auto max-h-[90vh] bg-white rounded-2xl shadow-2xl relative overflow-hidden border border-gray-100 flex flex-col"
                     >
 
                         {/* Header */}
@@ -165,7 +165,7 @@ export default function OrderDetailsModal(props){
 
                         {/* Scrollable Content */}
 
-                        <div className="max-h-[calc(90vh-120px)] overflow-y-auto">
+                        <div className="flex-1 overflow-y-auto">
 
 
                             {/* Order Details */}

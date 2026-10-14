@@ -8,14 +8,14 @@ export default function checkoutPage(){
     const location = useLocation()
     const [cart , setCart] = useState(location.state)
     return(
-        <div className="w-full min-h-full flex flex-col p-5 pb-20 items-center gap-4">
+        <div className="w-full min-h-full flex flex-col p-5 pb-[150px] lg:pb-20 items-center gap-4">
             {
             cart.map(
                 (item , index)=>{
                     return(
-                        <div key={item.product.productId} className=" bg-white w-[500px] h-[150px] rounded-lg shadow-2xl flex p-2 items-center relative">
+                        <div key={item.product.productId} className="bg-white w-full lg:w-[500px] lg:h-[150px] rounded-lg shadow-2xl flex flex-col lg:flex-row p-2 lg:items-center relative">
                             <img className="w-[100px] h-[100px] object-cover rounded-l-lg" src={item.product.image}/> 
-                            <div className="h-full w-[400px] ">
+                            <div className="h-full w-full lg:w-[400px]">
                                 <h1 className="text-lg font-semibold">{item.product.name}</h1>
                                 <p className="text-sm text-gray-500">{item.product.productId}</p>
                                 {
@@ -62,7 +62,7 @@ export default function checkoutPage(){
                 }
             )
         }
-        <div className=" w-[500px] bg-white border rounded-t-lg shadow-2xl flex p-2 items-center justify-between fixed bottom-0">
+        <div className="w-full lg:w-[850px] bg-white border rounded-t-lg shadow-2xl flex p-3 items-center justify-between fixed left-0 right-0 mx-auto lg:bottom-0 bottom-[82px]">
             <CreateOrderModal cart={cart}/>
             <p className="text-xl font-bold ml-4">Total: {getFormattedPrice(getCartTotal(cart))}</p>
         </div>

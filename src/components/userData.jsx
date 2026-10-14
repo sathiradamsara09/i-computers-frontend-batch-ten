@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../utils/api";
 import { Link, useNavigate } from "react-router-dom";
+import { CiUser } from "react-icons/ci";
 
 export default function UserData(){
 
@@ -30,12 +31,12 @@ export default function UserData(){
     ,[])
 
     return(
-        <div>
+        <>
             {
                 user? (
-                    <div className="flex">
-                        <img src={user.image} className="w-[30px] aspect-square" />
-                        <select className="text-white text-center"
+                    <div className="flex h-full aspect-square lg:w-[150px] relative rounded-lg ">
+                        <img src={user.image} className="w-full lg:w-auto aspect-square absolute lg:static rounded-lg" />
+                        <select className="absolute lg:static text-transparent lg:text-white text-center w-full h-full"
                             onChange={(e)=>{
                                 if(e.target.value === "option2"){
                                     navigate("/settings")
@@ -49,20 +50,25 @@ export default function UserData(){
                             }}
                         >
                             <option value="option1" className="text-secondary">{user.firstName}</option>
-                            <option value="option2" className="text-secondary">Settings</option>
-                            <option value="option3" className="text-secondary">My Orders</option>
-                            <option value="option4" className="text-secondary">Logout</option>
+                            <option value="option2" className="text-secondary text-white">Settings</option>
+                            <option value="option3" className="text-secondary text-white">My Orders</option>
+                            <option value="option4" className="text-secondary text-white">Logout</option>
                         </select>
                         </div>
                 ) : (
                
                 
-                <>ß
+                <>
 
-                <Link to="/login" className="text-white text-lg font-semibold mr-4">Login</Link>
-                <Link to="/register" className="text-white text-lg font-semibold">Register</Link>
+                <Link to="/login" className="absolute lg:text-white lg:text-lg lg:font-semibold h-full aspect-square flex justify-center items-center rounded-lg text-accent shadow-2xl shadow-accent text-3xl">
+                <CiUser />
+                </Link>
+                
+                <Link to="/register" className="text-white text-lg font-semibold hidden lg-block">
+                Register
+                </Link>
                 </>
             )}
-        </div>
+        </>
     );
 }
