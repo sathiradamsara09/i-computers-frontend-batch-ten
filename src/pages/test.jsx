@@ -53,12 +53,11 @@
 
 export default function TestPage(){
     return(
-        <div className="w-full h-full ">
+        <div className="w-full h-screen flex justify-center items-center bg-primary text-secondary flex-col gap-10">
 
-            <div className="bg-green-500 lg:bg-red-600 w-[300px] h-[300px]">
-            
-            </div>
+           <h1 className="text-3xl font-bold">Test Page</h1>
+           <p>This is a test page</p>
 
         </div>
-    )
+    );
 }
